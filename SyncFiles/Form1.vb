@@ -7,7 +7,6 @@ Public Class Form1
         Dim sync As New myDirMonitor(dir1, dir2)
 
     End Sub
-
 End Class
 
 Public Class myDirMonitor
