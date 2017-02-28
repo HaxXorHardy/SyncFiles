@@ -10,7 +10,6 @@ Public Class Form1
 
 End Class
 
-
 Public Class myDirMonitor
 
     Dim Dir1 As DirectoryInfo
