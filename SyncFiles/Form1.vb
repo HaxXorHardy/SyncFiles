@@ -5,8 +5,8 @@ Public Class Form1
         Dim dir1 As String = "C:\Users\*\Dropbox\DropsyncFiles"
         Dim dir2 As String = "C:\Users\*\Documents\my games\Fallout Shelter"
         Dim sync As New myDirMonitor(dir1, dir2)
-
     End Sub
+
 End Class
 
 Public Class myDirMonitor
@@ -35,7 +35,6 @@ Public Class myDirMonitor
         Rtb("Sync2 complete! all done", 3, True)
         Return SyncResults.Successfull
     End Function
-
 
     Private Function SyncProcess(
         ByVal sourceDir As DirectoryInfo,
