@@ -2,8 +2,8 @@
 Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim dir1 As String = "C:\Users\*\Dropbox\DropsyncFiles"
-        Dim dir2 As String = "C:\Users\*\Documents\my games\Fallout Shelter"
+        Dim dir1 As String = "C:\Users\Maurice\Dropbox\DropsyncFiles"
+        Dim dir2 As String = "C:\Users\Maurice\Documents\my games\Fallout Shelter"
         Dim sync As New myDirMonitor(dir1, dir2)
     End Sub
 
@@ -58,12 +58,13 @@ Public Class myDirMonitor
                 Rtb("File: ", 0, False)
                 Rtb(files(f).Name, 2, False)
                 Rtb(" exists!", 1, False)
-                If files(f).LastWriteTime > File.GetLastAccessTime(destinationDir.FullName & "\" & files(f).Name) Then
+                If files(f).LastWriteTime > File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name) Then
                     File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name, True)
                     Rtb(" but is Newer ---> copy!", 3, True)
-                    Rtb(files(f).LastWriteTime & " -- " & File.GetLastAccessTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                    Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
                 Else
                     Rtb(" and is up to date!", 1, True)
+                    Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
                 End If
             Else
                 File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name)
