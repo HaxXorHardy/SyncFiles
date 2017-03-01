@@ -28,9 +28,15 @@ Public Class myDirMonitor
     End Sub
 
     Public Function BeginSynchronization() As SyncResults
-        Rtb("Start sync!", 3, True)
+        Rtb("Start Sync!", 3, True)
+        Rtb(Dir1.ToString & " ---> " & Dir2.ToString, 0, True)
         If Me.SyncProcess(Dir1, Dir2) = SyncResults.NotSuccessfull Then Return SyncResults.NotSuccessfull
-        Rtb("Sync1 complete! Change direction -><-", 3, True)
+        Rtb(vbNewLine, 0, True)
+        Rtb("--------------------------------------------------------", 3, True)
+        Rtb("-> Sync1 complete! Change direction <-", 3, True)
+        Rtb(Dir2.ToString & " ---> " & Dir1.ToString, 0, True)
+        Rtb("--------------------------------------------------------", 3, True)
+        Rtb(vbNewLine, 0, True)
         If Me.SyncProcess(Dir2, Dir1) = SyncResults.NotSuccessfull Then Return SyncResults.NotSuccessfull
         Rtb("Sync2 complete! all done", 3, True)
         Return SyncResults.Successfull
@@ -64,7 +70,7 @@ Public Class myDirMonitor
                     Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
                 Else
                     Rtb(" and is up to date!", 1, True)
-                    Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                    'Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
                 End If
             Else
                 File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name)
@@ -91,7 +97,7 @@ Public Class myDirMonitor
             If colour = 1 Then
                 .SelectionColor = Color.YellowGreen
             ElseIf colour = 2 Then
-                .SelectionColor = Color.LimeGreen
+                .SelectionColor = Color.Green
             ElseIf colour = 3 Then
                 .SelectionColor = Color.Red
             Else
