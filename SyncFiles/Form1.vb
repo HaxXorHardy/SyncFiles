@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Public Class Form1
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim dir1 As String = "C:\Users\Maurice\Dropbox\DropsyncFiles"
         Dim dir2 As String = "C:\Users\Maurice\Documents\my games\Fallout Shelter"
         Dim sync As New myDirMonitor(dir1, dir2)
