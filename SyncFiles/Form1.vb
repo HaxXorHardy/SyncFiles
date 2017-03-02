@@ -68,14 +68,14 @@ Public Class myDirMonitor
                 Rtb(files(f).Name, 2, False)
                 Rtb(" exists!", 1, False)
                 If files(f).LastWriteTime > File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name) Then
-                    File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name, True)
                     Rtb(" but is Newer ---> copy!", 3, True)
                     Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
                     Rtb(MD5FileHash(files(f).FullName) & "  -  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                    File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name, True)
                 Else
                     Rtb(" and is up to date!", 1, True)
                     'Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
-                    Rtb(MD5FileHash(files(f).FullName) & "  -  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                    'Rtb(MD5FileHash(files(f).FullName) & "  -  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
                 End If
             Else
                 File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name)
