@@ -6,33 +6,49 @@ Public Class Form1
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim dir1 As String = "C:\Users\Maurice\Dropbox\DropsyncFiles"
         Dim dir2 As String = "C:\Users\Maurice\Documents\my games\Fallout Shelter"
-        RichTextBox1.Text = Nothing
-        Dim sync As New myDirMonitor(dir1, dir2)
+        Dim checkMD5 As Boolean = False
+        StartSync(dir1, dir2, checkMD5)
     End Sub
 
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Dim dir1 As String = "C:\Users\Maurice\Dropbox\DropsyncFiles"
+        Dim dir2 As String = "C:\Users\Maurice\Documents\my games\Fallout Shelter"
+        Dim checkMD5 As Boolean = True
+        StartSync(dir1, dir2, checkMD5)
+    End Sub
+
+    Private Sub StartSync(ByVal dir1 As String, ByVal dir2 As String, ByVal checkMD5 As Boolean)
+        RichTextBox1.Text = Nothing
+        Dim sync As New myDirMonitor(dir1, dir2, checkMD5)
+    End Sub
 End Class
 
 Public Class myDirMonitor
 
     Dim Dir1 As DirectoryInfo
     Dim Dir2 As DirectoryInfo
+    Dim checkMD5 As Boolean = False
 
     Public Enum SyncResults
         Successfull = 0
         NotSuccessfull = 1
     End Enum
 
-    Public Sub New(ByVal dir1 As String, ByVal dir2 As String)
+    Public Sub New(ByVal dir1 As String, ByVal dir2 As String, ByVal checkmd5 As Boolean)
         Me.Dir1 = New DirectoryInfo(dir1)
         Me.Dir2 = New DirectoryInfo(dir2)
+        Me.checkMD5 = checkmd5
         'Both directories must exist... if not an exception is thrown
         If (Not Me.Dir1.Exists) OrElse (Not Me.Dir2.Exists) Then Throw New DirectoryNotFoundException
         Me.BeginSynchronization()
     End Sub
 
     Public Function BeginSynchronization() As SyncResults
+        Rtb("--------------------------------------------------------", 3, True)
         Rtb("Start Sync!", 3, True)
         Rtb(Dir1.ToString & " ---> " & Dir2.ToString, 0, True)
+        Rtb("--------------------------------------------------------", 3, True)
+        Rtb(vbNewLine, 0, True)
         If Me.SyncProcess(Dir1, Dir2) = SyncResults.NotSuccessfull Then Return SyncResults.NotSuccessfull
         Rtb(vbNewLine, 0, True)
         Rtb("--------------------------------------------------------", 3, True)
@@ -41,7 +57,11 @@ Public Class myDirMonitor
         Rtb("--------------------------------------------------------", 3, True)
         Rtb(vbNewLine, 0, True)
         If Me.SyncProcess(Dir2, Dir1) = SyncResults.NotSuccessfull Then Return SyncResults.NotSuccessfull
+        Rtb(vbNewLine, 0, True)
+        Rtb("--------------------------------------------------------", 3, True)
         Rtb("Sync2 complete! all done", 3, True)
+        Rtb("--------------------------------------------------------", 3, True)
+        Rtb(vbNewLine, 0, True)
         Return SyncResults.Successfull
     End Function
 
@@ -68,14 +88,23 @@ Public Class myDirMonitor
                 Rtb(files(f).Name, 2, False)
                 Rtb(" exists!", 1, False)
                 If files(f).LastWriteTime > File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name) Then
-                    Rtb(" but is Newer ---> copy!", 3, True)
-                    Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
-                    Rtb(MD5FileHash(files(f).FullName) & "  -  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
-                    File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name, True)
-                Else
-                    Rtb(" and is up to date!", 1, True)
-                    'Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
-                    'Rtb(MD5FileHash(files(f).FullName) & "  -  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                    Rtb(" but is Newer", 3, False)
+                    If (MD5FileHash(files(f).FullName) <> MD5FileHash(destinationDir.FullName & "\" & files(f).Name)) Or checkMD5 = False Then
+                        Rtb(" ---> copy!", 3, True)
+                        'Rtb(MD5FileHash(files(f).FullName) & "  /=  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                        Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                        File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name, True)
+                    Else
+                        Rtb(" same Hash no need to copy!", 4, True)
+                        Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                        Rtb(MD5FileHash(files(f).FullName) & "  =  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                    End If
+                ElseIf files(f).LastWriteTime < File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name) Then
+                        Rtb(" and is newer!", 4, True)
+                        'Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                        'Rtb(MD5FileHash(files(f).FullName) & "  -  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                    Else
+                        Rtb(" and is up to date!", 1, True)
                 End If
             Else
                 File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name)
@@ -105,6 +134,8 @@ Public Class myDirMonitor
                 .SelectionColor = Color.Green
             ElseIf colour = 3 Then
                 .SelectionColor = Color.Red
+            ElseIf colour = 4 Then
+                .SelectionColor = Color.Blue
             Else
                 .SelectionColor = Color.Black
             End If
