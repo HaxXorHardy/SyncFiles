@@ -1,9 +1,12 @@
 ﻿Imports System.IO
+Imports System.Security.Cryptography
+
 Public Class Form1
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim dir1 As String = "C:\Users\Maurice\Dropbox\DropsyncFiles"
         Dim dir2 As String = "C:\Users\Maurice\Documents\my games\Fallout Shelter"
+        RichTextBox1.Text = Nothing
         Dim sync As New myDirMonitor(dir1, dir2)
     End Sub
 
@@ -68,9 +71,11 @@ Public Class myDirMonitor
                     File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name, True)
                     Rtb(" but is Newer ---> copy!", 3, True)
                     Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                    Rtb(MD5FileHash(files(f).FullName) & "  -  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
                 Else
                     Rtb(" and is up to date!", 1, True)
                     'Rtb(files(f).LastWriteTime & " -- " & File.GetLastWriteTime(destinationDir.FullName & "\" & files(f).Name), 0, True)
+                    Rtb(MD5FileHash(files(f).FullName) & "  -  " & MD5FileHash(destinationDir.FullName & "\" & files(f).Name), 0, True)
                 End If
             Else
                 File.Copy(files(f).FullName, destinationDir.FullName & "\" & files(f).Name)
@@ -109,7 +114,27 @@ Public Class myDirMonitor
             Else
                 .AppendText(str)
             End If
+            Form1.RichTextBox1.ScrollToCaret()
         End With
     End Sub
+
+    Private Function MD5FileHash(ByVal sFile As String) As String
+        Dim MD5 As New MD5CryptoServiceProvider
+        Dim Hash As Byte()
+        Dim Result As String = ""
+        Dim Tmp As String = ""
+
+        Dim FN As New FileStream(sFile, FileMode.Open, FileAccess.Read, FileShare.Read, 8192)
+        MD5.ComputeHash(FN)
+        FN.Close()
+
+        Hash = MD5.Hash
+        For i As Integer = 0 To Hash.Length - 1
+            Tmp = Hex(Hash(i))
+            If Len(Tmp) = 1 Then Tmp = "0" & Tmp
+            Result += Tmp
+        Next
+        Return Result
+    End Function
 
 End Class
