@@ -3,24 +3,61 @@ Imports System.Security.Cryptography
 
 Public Class Form1
 
+#Region " ---> Buttons"
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim dir1 As String = "C:\Users\Maurice\Dropbox\DropsyncFiles"
-        Dim dir2 As String = "C:\Users\Maurice\Documents\my games\Fallout Shelter"
+        Dim dir1 As String = "F:\Serie"
+        Dim dir2 As String = "J:\Serie"
         Dim checkMD5 As Boolean = False
         StartSync(dir1, dir2, checkMD5)
     End Sub
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Dim dir1 As String = "C:\Users\Maurice\Dropbox\DropsyncFiles"
-        Dim dir2 As String = "C:\Users\Maurice\Documents\my games\Fallout Shelter"
-        Dim checkMD5 As Boolean = True
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Dim dir1 As String = "F:\Games"
+        Dim dir2 As String = "J:\Games"
+        Dim checkMD5 As Boolean = False
         StartSync(dir1, dir2, checkMD5)
     End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim dir1 As String = "F:\Filme"
+        Dim dir2 As String = "J:\Filme"
+        Dim checkMD5 As Boolean = False
+        StartSync(dir1, dir2, checkMD5)
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Dim dir1 As String = "F:\Programme"
+        Dim dir2 As String = "J:\Programme"
+        Dim checkMD5 As Boolean = False
+        StartSync(dir1, dir2, checkMD5)
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Button1_Click(sender, e)
+        Button2_Click(sender, e)
+        Button3_Click(sender, e)
+        Button5_Click(sender, e)
+    End Sub
+
+#End Region
+
+    'some personal improvements
+    ' Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+    '  Dim dir1 As String = "C:\Users\Maurice\Dropbox\DropsyncFiles"
+    '       Dim dir2 As String = "C:\Users\Maurice\Documents\my games\Fallout Shelter"
+    '        Dim checkMD5 As Boolean = True
+    'StartSync(dir1, dir2, checkMD5)
+    'End Sub
 
     Private Sub StartSync(ByVal dir1 As String, ByVal dir2 As String, ByVal checkMD5 As Boolean)
         RichTextBox1.Text = Nothing
         Dim sync As New myDirMonitor(dir1, dir2, checkMD5)
     End Sub
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
 End Class
 
 Public Class myDirMonitor
@@ -56,12 +93,15 @@ Public Class myDirMonitor
         Rtb(Dir2.ToString & " ---> " & Dir1.ToString, 0, True)
         Rtb("--------------------------------------------------------", 3, True)
         Rtb(vbNewLine, 0, True)
-        If Me.SyncProcess(Dir2, Dir1) = SyncResults.NotSuccessfull Then Return SyncResults.NotSuccessfull
-        Rtb(vbNewLine, 0, True)
-        Rtb("--------------------------------------------------------", 3, True)
-        Rtb("Sync2 complete! all done", 3, True)
-        Rtb("--------------------------------------------------------", 3, True)
-        Rtb(vbNewLine, 0, True)
+        '
+        'Uncomment for direction change!!!
+        '
+        'If Me.SyncProcess(Dir2, Dir1) = SyncResults.NotSuccessfull Then Return SyncResults.NotSuccessfull
+        'Rtb(vbNewLine, 0, True)
+        'Rtb("--------------------------------------------------------", 3, True)
+        'Rtb("Sync2 complete! all done", 3, True)
+        'Rtb("--------------------------------------------------------", 3, True)
+        'Rtb(vbNewLine, 0, True)
         Return SyncResults.Successfull
     End Function
 
