@@ -39,6 +39,13 @@ Public Class Form1
         Button5_Click(sender, e)
     End Sub
 
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Dim dir1 As String = "C:\Program Files (x86)\Destiny 2"
+        Dim dir2 As String = "J:\Destiny 2"
+        Dim checkMD5 As Boolean = False
+        StartSync(dir1, dir2, checkMD5)
+    End Sub
+
 #End Region
 
     'some personal improvements
@@ -57,6 +64,7 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
+
 
 End Class
 
