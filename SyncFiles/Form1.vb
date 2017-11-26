@@ -37,11 +37,19 @@ Public Class Form1
         Button2_Click(sender, e)
         Button3_Click(sender, e)
         Button5_Click(sender, e)
+        Button6_Click(sender, e)
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         Dim dir1 As String = "C:\Program Files (x86)\Destiny 2"
         Dim dir2 As String = "J:\Destiny 2"
+        Dim checkMD5 As Boolean = False
+        StartSync(dir1, dir2, checkMD5)
+    End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Dim dir1 As String = "E:\Program Files (x86)\Steam\steamapps\common\PUBG"
+        Dim dir2 As String = "J:\PUBG"
         Dim checkMD5 As Boolean = False
         StartSync(dir1, dir2, checkMD5)
     End Sub
@@ -59,10 +67,6 @@ Public Class Form1
     Private Sub StartSync(ByVal dir1 As String, ByVal dir2 As String, ByVal checkMD5 As Boolean)
         RichTextBox1.Text = Nothing
         Dim sync As New myDirMonitor(dir1, dir2, checkMD5)
-    End Sub
-
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
     End Sub
 
 

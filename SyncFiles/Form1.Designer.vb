@@ -29,6 +29,7 @@ Partial Class Form1
         Me.Button4 = New System.Windows.Forms.Button()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
+        Me.Button7 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'RichTextBox1
@@ -94,11 +95,21 @@ Partial Class Form1
         Me.Button6.Text = "Destiny"
         Me.Button6.UseVisualStyleBackColor = True
         '
+        'Button7
+        '
+        Me.Button7.Location = New System.Drawing.Point(418, 506)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(75, 23)
+        Me.Button7.TabIndex = 7
+        Me.Button7.Text = "PUBG"
+        Me.Button7.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(875, 534)
+        Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button4)
@@ -123,4 +134,5 @@ Partial Class Form1
     Friend WithEvents Button4 As Button
     Friend WithEvents Button5 As Button
     Friend WithEvents Button6 As Button
+    Friend WithEvents Button7 As Button
 End Class
